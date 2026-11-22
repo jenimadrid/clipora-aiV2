@@ -106,7 +106,6 @@ $('saveShorts').onclick=()=>{if(!$('videoFile').files.length)return toast('Pleas
 $('saveEdit').onclick=()=>{if(!$('editName').value.trim())return toast('Please enter a project name.');save('Video Editor',$('editName').value+' · '+$('captions').value+' · '+$('vibe').value)}
 $('imageFile').onchange=e=>previewFile(e.target.files[0],'imagePreview','image');$('videoFile').onchange=e=>previewFile(e.target.files[0],'videoPreview','video');
 function previewFile(file,target,type){if(!file)return;const url=URL.createObjectURL(file),el=$(target);el.innerHTML=type==='image'?`<img src="${url}" alt="Selected image preview">`:`<video src="${url}" controls></video>`;el.classList.add('show')}
-</script>
 // CLIPORA AI BACKEND CONNECTION
 const CLIPORA_API = "https://clipora-api.jenaymadrid.workers.dev";
 
@@ -131,5 +130,6 @@ async function cliporaCheckBackend() {
   }
 }
 
+</script>
 cliporaCheckBackend();  
 </body></html>
