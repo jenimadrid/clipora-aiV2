@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090b12">
+<title>CLIPORA AI — Creator Studio</title>
+<style>
+:root{color-scheme:dark;--bg:#090b12;--panel:#121827;--panel2:#192238;--line:#2a3550;--text:#f5f7ff;--muted:#a3aec5;--purple:#8b5cf6;--cyan:#22d3ee;--green:#34d399;--red:#fb7185}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#24194b 0,transparent 38%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}
+.wrap{max-width:1120px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:11px;font-size:21px;font-weight:850;letter-spacing:.4px}.logo{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,var(--purple),var(--cyan));font-size:21px}.tag{font-size:11px;color:#d8ccff;border:1px solid #57458a;border-radius:30px;padding:3px 9px}
+nav{display:flex;gap:6px}nav button,.mode{background:transparent;border:1px solid transparent;color:var(--muted);padding:9px 12px;border-radius:10px}nav button.active,nav button:hover{background:var(--panel2);border-color:var(--line);color:white}
+.hero{margin:35px 0 24px}.eyebrow{color:#c4b5fd;font-size:11px;letter-spacing:2px;font-weight:800}.hero h1{font-size:clamp(30px,6vw,49px);line-height:1.08;margin:8px 0}.gradient{background:linear-gradient(90deg,#c4b5fd,#67e8f9);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);max-width:650px;margin:10px 0}.status{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);border-radius:30px;padding:7px 11px;color:var(--muted);font-size:12px;margin-top:8px}.dot{width:8px;height:8px;border-radius:50%;background:#fbbf24}.dot.good{background:var(--green)}.dot.bad{background:var(--red)}
+.grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(250px,.6fr);gap:18px}.panel{background:linear-gradient(180deg,#151d2e,#101522);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 18px 55px #0003}.panel h2{font-size:18px;margin:0 0 4px}.muted{color:var(--muted);font-size:13px}.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.mode{border:1px solid var(--line);background:#0d1320;text-align:center;font-size:13px}.mode.active{background:#30245a;border-color:#8b5cf6;color:#fff}.field{margin:15px 0}.field label{display:block;font-weight:650;font-size:13px;margin-bottom:7px}.field textarea,.field select,.field input{width:100%;border:1px solid var(--line);border-radius:11px;background:#0b1120;color:var(--text);padding:12px;outline:none}.field textarea{min-height:145px;resize:vertical}.field textarea:focus,.field select:focus{border-color:var(--purple)}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.primary{width:100%;border:0;border-radius:12px;padding:13px 16px;color:white;font-weight:800;background:linear-gradient(100deg,#7c3aed,#0891b2);box-shadow:0 8px 25px #5b21b655}.primary:disabled{opacity:.55;cursor:wait}.note{font-size:12px;color:var(--muted);margin-top:12px}.sidebox{padding:14px;border:1px solid var(--line);border-radius:13px;background:#0d1320;margin-top:12px}.sidebox strong{display:block;margin-bottom:5px}.history{margin-top:18px}.project{border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:9px;background:#0d1320;overflow-wrap:anywhere}.project small{display:block;color:var(--muted);margin-top:5px}.result{display:none;margin-top:14px;padding:13px;border-radius:12px;border:1px solid var(--line);background:#0b1320;overflow-wrap:anywhere}.result.show{display:block}.result.error{border-color:#7f1d1d}.hidden{display:none!important}.footer{color:#78839b;text-align:center;font-size:12px;padding:30px 0 12px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.wrap{padding:15px}.panel{padding:16px}.hero{margin-top:28px}}@media(max-width:430px){.modes{grid-template-columns:1fr}.two{grid-template-columns:1fr}nav{width:100%}nav button{flex:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+ <div class="brand"><div class="logo">✦</div><div>CLIPORA AI <span class="tag">CREATOR STUDIO</span></div></div>
+ <nav><button class="active" id="studioNav">Studio</button><button id="projectsNav">My Projects</button><button id="aboutNav">About</button></nav>
+</header>
+<section class="hero">
+ <div class="eyebrow">YOUR CREATIVE WORKSPACE</div>
+ <h1>Turn your ideas into <span class="gradient">video stories.</span></h1>
+ <p>Create a video brief, organize your projects, and prepare your next short-form video from one simple workspace.</p>
+ <div class="status"><span class="dot" id="apiDot"></span><span id="apiStatus">Checking backend connection…</span></div>
+</section>
+<main id="studioPage" class="grid">
+ <section class="panel">
+  <h2>Create a new project</h2><p class="muted">Choose a workflow and describe the video you want to make.</p>
+  <div class="modes">
+   <button class="mode active" data-mode="text-to-video">✍️ Text to Video</button>
+   <button class="mode" data-mode="image-to-video">🖼️ Image to Video</button>
+   <button class="mode" data-mode="long-to-shorts">✂️ Long to Shorts</button>
+  </div>
+  <form id="createForm">
+   <div class="field"><label for="prompt" id="promptLabel">Describe your video</label><textarea id="prompt" maxlength="2000" required placeholder="Example: A cinematic golden sunset over the ocean, gentle waves, warm lighting, inspiring mood…"></textarea><div class="muted"><span id="count">0</span>/2000 characters</div></div>
+   <div class="two">
+    <div class="field"><label for="style">Visual style</label><select id="style"><option value="cinematic">Cinematic</option><option value="realistic">Realistic</option><option value="anime">Anime</option><option value="3d-animation">3D animation</option><option value="minimal">Minimal</option><option value="documentary">Documentary</option></select></div>
+    <div class="field"><label for="ratio">Aspect ratio</label><select id="ratio"><option value="9:16">9:16 — TikTok / Reels</option><option value="16:9">16:9 — YouTube</option><option value="1:1">1:1 — Square</option></select></div>
+   </div>
+   <button class="primary" id="submitBtn" type="submit">Submit Video Brief</button>
+  </form>
+  <div class="result" id="resultBox" role="status"></div>
+  <p class="note">Prototype notice: this sends your brief to the CLIPORA backend. Actual video rendering will be added after we connect a video-generation provider.</p>
+ </section>
+ <aside class="panel">
+  <h2>Workspace overview</h2><p class="muted">Your creative tools at a glance.</p>
+  <div class="sidebox"><strong>✍️ Text to Video</strong><span class="muted">Turn a written idea into a structured video brief.</span></div>
+  <div class="sidebox"><strong>🖼️ Image to Video</strong><span class="muted">Prepare an image-based video brief. Image upload is not enabled yet.</span></div>
+  <div class="sidebox"><strong>✂️ Long to Shorts</strong><span class="muted">Plan short-form edits from longer content.</span></div>
+  <div class="sidebox"><strong>🔌 Backend</strong><span class="muted" id="backendDetail">Connecting to Cloudflare Worker…</span></div>
+ </aside>
+</main>
+<section id="projectsPage" class="panel hidden">
+ <h2>My Projects</h2><p class="muted">Video briefs saved on this device.</p><div id="projectList"></div>
+</section>
+<section id="aboutPage" class="panel hidden">
+ <h2>About CLIPORA AI</h2><p class="muted">CLIPORA AI is an early-stage creator workspace prototype. It currently submits project briefs to its backend and stores a local history in this browser.</p><div class="sidebox"><strong>What works now</strong><span class="muted">Backend health check, video brief submission, and local project history.</span></div><div class="sidebox"><strong>What is not connected yet</strong><span class="muted">Actual AI video generation, image upload/storage, video editing, voice generation, and captions.</span></div>
+</section>
+<footer class="footer">CLIPORA AI · Built for creators · Prototype v1.0</footer>
+</div>
+<script>
+const API = "https://clipora-api.jenaymadrid.workers.dev";
+let currentMode = "text-to-video";
+const $ = id => document.getElementById(id);
+const pages = {studio:$("studioPage"),projects:$("projectsPage"),about:$("aboutPage")};
+function showPage(name){
+ Object.entries(pages).forEach(([key,node])=>node.classList.toggle("hidden",key!==name));
+ ["studio","projects","about"].forEach(key=>$(key+"Nav").classList.toggle("active",key===name));
+ if(name==="projects") renderProjects();
+}
+$("studioNav").onclick=()=>showPage("studio");
+$("projectsNav").onclick=()=>showPage("projects");
+$("aboutNav").onclick=()=>showPage("about");
+document.querySelectorAll(".mode").forEach(btn=>btn.addEventListener("click",()=>{
+ document.querySelectorAll(".mode").forEach(b=>b.classList.remove("active"));
+ btn.classList.add("active");currentMode=btn.dataset.mode;
+ const labels={"text-to-video":"Describe your video","image-to-video":"Describe how your image should move","long-to-shorts":"Describe the short clips you want"};
+ $("promptLabel").textContent=labels[currentMode];
+ $("prompt").placeholder=currentMode==="long-to-shorts"?"Describe the long video and the short clips you want to create…":"Write your video idea here…";
+}));
+$("prompt").addEventListener("input",()=>$("count").textContent=$("prompt").value.length);
+function getProjects(){try{return JSON.parse(localStorage.getItem("cliporaProjects")||"[]")}catch(e){return []}}
+function saveProject(p){const all=getProjects();all.unshift(p);localStorage.setItem("cliporaProjects",JSON.stringify(all.slice(0,50)))}
+function renderProjects(){
+ const list=$("projectList"),items=getProjects();list.innerHTML="";
+ if(!items.length){list.innerHTML='<p class="muted">No projects yet. Submit your first video brief in Studio.</p>';return}
+ items.forEach(p=>{const el=document.createElement("div");el.className="project";const title=document.createElement("strong");title.textContent=p.mode.replaceAll("-"," ").replace(/\b\w/g,c=>c.toUpperCase());const desc=document.createElement("div");desc.textContent=p.prompt;const meta=document.createElement("small");meta.textContent=new Date(p.createdAt).toLocaleString()+" · "+p.status;el.append(title,desc,meta);list.appendChild(el)})
+}
+async function checkHealth(){
+ try{const r=await fetch(API+"/api/health");if(!r.ok)throw new Error("HTTP "+r.status);const d=await r.json();if(!d.success)throw new Error("Health check failed");$("apiDot").className="dot good";$("apiStatus").textContent="Backend online";$("backendDetail").textContent="Connected · version "+(d.version||"available")}
+ catch(e){$("apiDot").className="dot bad";$("apiStatus").textContent="Backend connection unavailable";$("backendDetail").textContent="Could not connect. Check the Worker deployment and URL."}
+}
+$("createForm").addEventListener("submit",async e=>{
+ e.preventDefault();const prompt=$("prompt").value.trim();if(!prompt){$("prompt").focus();return}
+ const btn=$("submitBtn"),box=$("resultBox");btn.disabled=true;btn.textContent="Sending brief…";box.className="result show";box.textContent="Sending your project brief to CLIPORA AI…";
+ try{
+  const response=await fetch(API+"/api/"+currentMode,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt,style:$("style").value,aspect_ratio:$("ratio").value})});
+  const data=await response.json();if(!response.ok||!data.success)throw new Error(data.error||"Request failed");
+  const project={mode:currentMode,prompt,jobId:data.job_id||"",status:"Brief submitted · video generation not connected",createdAt:new Date().toISOString()};
+  saveProject(project);box.className="result show";box.textContent="✓ Your video brief was received! Project ID: "+(data.job_id||"created")+". Actual video generation is not connected yet.";renderProjects();
+ }catch(err){box.className="result show error";box.textContent="Could not submit your brief: "+err.message+". Please check your internet connection and try again."}
+ finally{btn.disabled=false;btn.textContent="Submit Video Brief"}
+});
+checkHealth();
+</script>
+</body>
+</html>
