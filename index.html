@@ -107,4 +107,30 @@ $('saveEdit').onclick=()=>{if(!$('editName').value.trim())return toast('Please e
 $('imageFile').onchange=e=>previewFile(e.target.files[0],'imagePreview','image');$('videoFile').onchange=e=>previewFile(e.target.files[0],'videoPreview','video');
 function previewFile(file,target,type){if(!file)return;const url=URL.createObjectURL(file),el=$(target);el.innerHTML=type==='image'?`<img src="${url}" alt="Selected image preview">`:`<video src="${url}" controls></video>`;el.classList.add('show')}
 </script>
+// CLIPORA AI BACKEND CONNECTION
+const CLIPORA_API = "https://clipora-api.jenaymadrid.workers.dev";
+
+async function cliporaCheckBackend() {
+  try {
+    const response = await fetch(
+      `${CLIPORA_API}/api/health`
+    );
+
+    if (!response.ok) {
+      throw new Error("Backend unavailable");
+    }
+
+    const data = await response.json();
+
+    console.log("CLIPORA API:", data);
+    return data.success === true;
+
+  } catch (error) {
+    console.error("CLIPORA connection error:", error);
+    return false;
+  }
+}
+
+cliporaCheckBackend();
+  
 </body></html>
